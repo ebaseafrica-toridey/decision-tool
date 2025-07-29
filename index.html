@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tori Dey Decision Making Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4fff4;
+      margin: 0;
+      padding: 0;
+      color: #003300;
+    }
+    header {
+      background-color: #3CB371;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+    .lang-toggle {
+      text-align: right;
+      padding: 10px;
+      background-color: #d0f0c0;
+    }
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    img {
+      display: block;
+      margin: 0 auto 30px;
+      max-width: 100%;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #2e8b57;
+    }
+    input[type="text"], input[type="email"], textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #3CB371;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .result-message {
+      background-color: #e0ffe0;
+      border: 1px solid #3CB371;
+      padding: 10px;
+      margin-top: 20px;
+      display: none;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">Tori Dey Decision Making Tool</h1>
+  </header>
+
+  <div class="lang-toggle">
+    <button onclick="toggleLanguage()">Français / English</button>
+  </div>
+
+  <div class="container">
+    <img src="compass.png" alt="Tori Dey Compass">
+
+    <form id="storyForm" action="https://formspree.io/f/xblkjnad" method="POST">
+      <label data-en="Email:" data-fr="Email :"></label>
+      <input type="email" name="email" required>
+
+      <label data-en="Institution / Affiliation:" data-fr="Institution / Affiliation :"></label>
+      <input type="text" name="institution" required>
+
+      <label data-en="Country:" data-fr="Pays :"></label>
+      <input type="text" name="country" required>
+
+      <label data-en="Who is your primary audience?" data-fr="Quel est votre public principal ?"></label>
+      <select name="audience">
+        <option data-en="Policymakers" data-fr="Décideurs politiques">Policymakers</option>
+        <option data-en="Practitioners" data-fr="Praticiens">Practitioners</option>
+        <option data-en="People" data-fr="Population">People</option>
+        <option data-en="Researchers" data-fr="Chercheurs">Researchers</option>
+        <option data-en="Donors/Funders/Dev agencies" data-fr="Bailleurs/Agences de développement">Donors/Funders/Dev agencies</option>
+      </select>
+
+      <label data-en="Are there any additional groups or stakeholders you are aiming to reach?" data-fr="Y a-t-il d'autres groupes ou parties prenantes que vous souhaitez atteindre ?"></label>
+      <input type="text" name="additionalGroups">
+
+      <label data-en="What do you want the story to be about?" data-fr="De quoi voulez-vous que l'histoire parle ?"></label>
+      <select name="storyAbout" id="storyAbout" onchange="recommendStory()">
+        <option value="">No Response</option>
+        <option value="process">The approach and methodology we employed/the way we did our work</option>
+        <option value="narrative">The way we worked and the results</option>
+        <option value="impact">The impact of our work on People’s lives</option>
+        <option value="creative">How scientific data can elicit artistic creativity</option>
+      </select>
+
+      <label data-en="What message do you want to convey?" data-fr="Quel message souhaitez-vous transmettre ?"></label>
+      <input type="text" name="message">
+
+      <label data-en="Is there any other message you would like to convey?" data-fr="Y a-t-il un autre message que vous aimeriez transmettre ?"></label>
+      <textarea name="otherMessage"></textarea>
+
+      <label data-en="Why do you want to tell this story?" data-fr="Pourquoi voulez-vous raconter cette histoire ?"></label>
+      <input type="text" name="whyStory">
+
+      <label data-en="Are there other reasons why you want to tell this story?" data-fr="Y a-t-il d'autres raisons pour lesquelles vous voulez raconter cette histoire ?"></label>
+      <textarea name="otherReasons"></textarea>
+
+      <label data-en="How do you want to tell this story?" data-fr="Comment souhaitez-vous raconter cette histoire ?"></label>
+      <input type="text" name="howStory">
+
+      <label data-en="Are there other means through which you would like to tell this story?" data-fr="Y a-t-il d'autres moyens par lesquels vous souhaitez raconter cette histoire ?"></label>
+      <textarea name="otherMeans"></textarea>
+
+      <label data-en="When do you want to tell this story?" data-fr="Quand voulez-vous raconter cette histoire ?"></label>
+      <input type="text" name="whenStory">
+
+      <label data-en="What specific time do you want to tell this story?" data-fr="À quel moment précis souhaitez-vous raconter cette histoire ?"></label>
+      <input type="text" name="specificTime">
+
+      <label data-en="Any events or seasons you are targeting?" data-fr="Y a-t-il des événements ou saisons que vous ciblez ?"></label>
+      <input type="text" name="seasons">
+
+      <label data-en="Are there other event(s) you are targeting?" data-fr="Y a-t-il d'autres événements que vous ciblez ?"></label>
+      <textarea name="otherEvents"></textarea>
+
+      <label data-en="Where do you want to tell this story?" data-fr="Où souhaitez-vous raconter cette histoire ?"></label>
+      <input type="text" name="whereStory">
+
+      <label data-en="Where else do you want to tell this story?" data-fr="Où d'autre souhaitez-vous raconter cette histoire ?"></label>
+      <textarea name="otherPlaces"></textarea>
+
+      <button type="submit" data-en="Submit" data-fr="Soumettre">Submit</button>
+    </form>
+
+    <div class="result-message" id="resultMessage"></div>
+  </div>
+
+  <script>
+    function recommendStory() {
+      const storyType = document.getElementById("storyAbout").value;
+      let message = "";
+      if (storyType === "process") {
+        message = "Recommended: Process Story. eBASE Africa has received your submission and will work with you to bring your story to life.";
+      } else if (storyType === "narrative") {
+        message = "Recommended: Narrative Story. eBASE Africa has received your submission and will work with you to bring your story to life.";
+      } else if (storyType === "impact") {
+        message = "Recommended: Impact Story. eBASE Africa has received your submission and will work with you to bring your story to life.";
+      } else if (storyType === "creative") {
+        message = "Recommended: Creative Story. eBASE Africa has received your submission and will work with you to bring your story to life.";
+      }
+      const resultDiv = document.getElementById("resultMessage");
+      resultDiv.style.display = storyType ? "block" : "none";
+      resultDiv.innerText = message;
+    }
+
+    function toggleLanguage() {
+      const elements = document.querySelectorAll('[data-en]');
+      const isEnglish = document.body.classList.toggle('french');
+      elements.forEach(el => {
+        el.innerText = isEnglish ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+      });
+    }
+  </script>
+</body>
+</html>
